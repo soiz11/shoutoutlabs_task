@@ -1,41 +1,38 @@
-import { useEffect } from "react";
-import { results } from "./Slider";
-
-const CardArea = () => {
-  console.log("hello", results);
-
-  useEffect(() => {
-    console.log("page", results);
-  }, [results]);
+const resultArea = ({ results }) => {
+  const numColumns = results.length > 3 ? 4 : results.length > 2 ? 3 : 2;
+  console.log("num", numColumns);
+  console.log("initial result count", results.length);
 
   return (
-    <div className="mx-[10%] mt-[50px]">
-      {results ? (
-        <div className="h-[400px] myspe:h-[600px] w-[100%] bg-transparent grid grid-cols-4 gap-4 mt-2 relative l">
-          {results.map((card, index) => (
+    <div className="mx-auto my-[80px] w-[80%]">
+      {!results.length == 0 ? (
+        <div
+          className={`bg-transparent grid  gap-5 mt-2`}
+          style={{ gridTemplateColumns: `repeat(${numColumns}, 1fr)` }}
+        >
+          {results.map((result, index) => (
             <div
               key={index}
               className="relative group shadow-lg hover:shadow-2xl rounded-lg overflow-hidden"
+              style={{ height: numColumns === 2 ? "400px" : "300px" }}
             >
-              <img
-                src={card.Images}
-                className="w-[100%] h-[100%] object-cover"
-              />
+              <img src={result.Images} className="w-full h-full object-cover" />
 
-              {/*card name */}
+              {/*result name */}
               <div className="absolute bottom-0 right-10 left-10 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 text-center font-semibold my2:text-[20px] px-4 py-2 rounded shadow-lg">
-                {card.Title}
+                {result.Title}
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-[40px] text-black text-center mt-[100px]">
-          Search results
+        <div className="text-[40px] text-[#77328b] text-center mt-[150px] py-2 px-1 shadow-lg border-[1px] border-[#77328b] rounded-md">
+          Insert Your Favourite Movie And Click The Search Button
         </div>
       )}
+      {/*instruction area */}
     </div>
   );
 };
 
-export default CardArea;
+export default resultArea;
