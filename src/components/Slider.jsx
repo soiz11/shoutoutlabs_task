@@ -164,9 +164,10 @@ const Slider = () => {
           </div>
 
           <div
-            className={`bg-${
-              filterButtonClicked ? "[#3b3b3b]" : "[#77328b]"
-            } mx-2 px-5 h-[70%]  flex justify-center items-center cursor-pointer `}
+            style={{
+              backgroundColor: filterButtonClicked ? "#3b3b3b" : "#77328b",
+            }}
+            className="mx-2 px-5 h-[70%] flex justify-center items-center cursor-pointer"
             onClick={() => {
               filterDataByAlgorithm(collection, algorithm);
               setFilterButtonClicked(true);
