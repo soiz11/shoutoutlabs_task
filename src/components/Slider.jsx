@@ -3,6 +3,7 @@ import { FaChevronLeft } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa6";
 import { CiSearch } from "react-icons/ci";
 
+const results = [];
 const Slider = () => {
   const [current, setCurrent] = useState(0);
   const [search, setSearch] = useState("");
@@ -10,9 +11,8 @@ const Slider = () => {
 
   //slicing input
   const phrase = search;
-  const wordsArray = phrase.split(" ");
+  const wordsArray = phrase ? phrase.split(" ") : [];
   const algorithm = [];
-  const results = [];
 
   for (let i = 0; i < wordsArray.length; i++) {
     algorithm.push(wordsArray[i]); // Push individual words
@@ -23,30 +23,31 @@ const Slider = () => {
       const found = oneword.slice(j, j + 3); //selected word slicing further
 
       algorithm.push(found); // splitted word push to the array
+      console.log(algorithm);
     }
   }
 
-  console.log(algorithm);
-
   //final filtering
   const filterDataByAlgorithm = (collection, algorithm) => {
+    const results = [];
     const filteredData = collection.filter((item) => {
       const includes = algorithm.some((part) =>
         item.Title.toLowerCase().includes(part.toLowerCase())
       );
 
-      if (includes) {
+      if (includes && algorithm.length > 0) {
         results.push({
           Title: item.Title,
           Images: item.Images,
         });
+        console.log(results);
+        //console.log(algorithm);
       }
 
       return includes;
     });
 
-    console.log("filtered data", filteredData);
-    console.log("results", results);
+    // console.log("results", results);
     return filteredData;
   };
 
@@ -96,11 +97,11 @@ const Slider = () => {
   //running fetch
   useEffect(() => {
     getData();
-  }, [search]);
+  }, []);
 
   return (
     //animated slider area
-    <div className="group relative w-full h-[60vh] flex items-center overflow-y-hidden overflow-x-auto scrollbar-hide scroll-smooth mb-[30px] ">
+    <div className="group relative w-full h-[50vh] flex items-center overflow-y-hidden overflow-x-auto scrollbar-hide scroll-smooth mb-[30px] ">
       {collection.map((collection, index) => (
         <div
           key={index}
@@ -124,7 +125,7 @@ const Slider = () => {
       ))}
 
       {/*slider nav buttons*/}
-      <div className="fixed top-3/7 -translate-y-1/2 hidden group-hover:flex justify-between px-[30px] w-[100vw]">
+      <div className="fixed top-1/4 -translate-y-1/2 hidden group-hover:flex justify-between px-[30px] w-[100vw]">
         <FaChevronLeft
           className="rounded-full p-[10px] bg-black bg-opacity-70 text-white text-[35px] cursor-pointer"
           onClick={previousSlide}
@@ -141,7 +142,7 @@ const Slider = () => {
           <CiSearch className="text-[20px] my3:text-[24px]  mr-2" />
           <input
             type="text"
-            className="text-gray-400 text-[14px] my3:text-[16px] outline-none w-[100%]"
+            className=" text-[14px] my3:text-[16px] outline-none w-[100%] text-balck"
             placeholder="Search Your Favourite search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -160,3 +161,4 @@ const Slider = () => {
 };
 
 export default Slider;
+export { results };
