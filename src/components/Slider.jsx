@@ -12,6 +12,7 @@ const Slider = () => {
   const phrase = search;
   const wordsArray = phrase.split(" ");
   const algorithm = [];
+  const results = [];
 
   for (let i = 0; i < wordsArray.length; i++) {
     algorithm.push(wordsArray[i]); // Push individual words
@@ -27,9 +28,29 @@ const Slider = () => {
 
   console.log(algorithm);
 
-  const filteredData = collection.filter((item) => algorithm.includes(item));
+  //final filtering
+  const filterDataByAlgorithm = (collection, algorithm) => {
+    const filteredData = collection.filter((item) => {
+      const includes = algorithm.some((part) =>
+        item.Title.toLowerCase().includes(part.toLowerCase())
+      );
 
-  console.log(filteredData);
+      if (includes) {
+        results.push({
+          Title: item.Title,
+          Images: item.Images,
+        });
+      }
+
+      return includes;
+    });
+
+    console.log("filtered data", filteredData);
+    console.log("results", results);
+    return filteredData;
+  };
+
+  // Example usage
 
   // data fetching
   const getData = async () => {
@@ -127,7 +148,10 @@ const Slider = () => {
           />
         </div>
 
-        <div className="bg-[#77328b] mx-2 px-5 h-[70%]  flex justify-center items-center cursor-pointer ">
+        <div
+          className="bg-[#77328b] mx-2 px-5 h-[70%]  flex justify-center items-center cursor-pointer "
+          onClick={() => filterDataByAlgorithm(collection, algorithm)}
+        >
           <div className="flex text-white font-medium text-[15px] ">Search</div>
         </div>
       </div>
