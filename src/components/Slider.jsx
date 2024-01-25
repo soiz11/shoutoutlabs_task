@@ -8,8 +8,28 @@ const Slider = () => {
   const [search, setSearch] = useState("");
   const [collection, setCollection] = useState([]);
 
-  console.log(search);
-  console.log(collection);
+  //slicing input
+  const phrase = search;
+  const wordsArray = phrase.split(" ");
+  const algorithm = [];
+
+  for (let i = 0; i < wordsArray.length; i++) {
+    algorithm.push(wordsArray[i]); // Push individual words
+
+    const oneword = wordsArray[i]; //get the pushed values for further spliting
+
+    for (let j = 0; j < oneword.length - 2; j++) {
+      const found = oneword.slice(j, j + 3); //selected word slicing further
+
+      algorithm.push(found); // splitted word push to the array
+    }
+  }
+
+  console.log(algorithm);
+
+  const filteredData = collection.filter((item) => algorithm.includes(item));
+
+  console.log(filteredData);
 
   // data fetching
   const getData = async () => {
@@ -17,6 +37,8 @@ const Slider = () => {
       const response = await fetch("./data.json");
       const data = await response.json();
       setCollection(data);
+      // setTitle(collection.Title);
+      console.log(collection);
     } catch (error) {
       console.log("Error fetching data:", error);
     }
@@ -41,7 +63,6 @@ const Slider = () => {
 
   //automatic movement after 5 seconds
   useEffect(() => {
-    getData();
     const interval = setInterval(() => {
       nextSlide();
     }, 5000);
@@ -50,6 +71,11 @@ const Slider = () => {
       clearInterval(interval);
     };
   }, [current]);
+
+  //running fetch
+  useEffect(() => {
+    getData();
+  }, [search]);
 
   return (
     //animated slider area
